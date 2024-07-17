@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -19,9 +20,9 @@ import java.util.List;
 @RequestMapping ("student")
 public class StudentController {
     //co che DI (Dependence Injection) : Tiem phu thuoc de giam su phu thuoc
-    //DI : Field
-    //DI: Getter
-    //DI : Constructor
+//    DI : Field
+//    DI: Getter
+//    DI : Constructor
 
     @Autowired
     IStudentService studentService;
@@ -39,16 +40,15 @@ public class StudentController {
 
     }
     @GetMapping("/create")
-    public String viewCreate(){
+    public String viewCreate(Model model){
+        model.addAttribute("student",new Student());
         return "student/create";
     }
 
     @PostMapping("/create")
-    public String newStudent(@RequestParam("name")String name,
-                             @RequestParam("address")String address,
-                             @RequestParam("score")Float score,
-                             Model model, RedirectAttributes redirectAttributes){
-        Student student = new Student(name,address,score);
+    public String newStudent(@ModelAttribute("student") Student student,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes){
         studentService.save(student);
         redirectAttributes.addFlashAttribute("message","them moi thanh cong");
         return "redirect:/student";

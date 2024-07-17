@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sach hoc sinh</title>
+    <meta charset="UTF-8">
+    <th:block th:replace="~{common/template::linkBootstrap}">
+    </th:block>
+</head>
+<body>
+<nav th:replace="~{common/template::navbar}"></nav>
+<div class="container">
+    <p style="color: blue" th:text="${message}"></p>
+    <button class="btn btn-primary mt-4" onclick="window.location.href='/student/create'">Them</button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th> So thu tu</th>
+<!--            <th>Ma</th>-->
+            <th>Ho va ten</th>
+            <th>Dia chi</th>
+            <th>Diem</th>
+            <th>Hoc luc</th>
+            <th>Chuc nang</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="student, interStat: ${students}">
+                <td th:text="${interStat.count}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.address}"></td>
+                <td th:text="${student.score}"></td>
+                <td>
+                    <span th:if="${student.score >=8}">Gioi</span>
+                    <span th:if="${student.score >=6.5 && student.score < 8}">Kha</span>
+                    <span th:if="${student.score >=5 && student.score < 6.5}">Trung binh</span>
+                    <span th:if="${student.score >=3.5 && student.score < 5}">Yeu</span>
+                    <span th:if="${student.score <=3.5}">Cook</span>
+
+
+                </td>
+
+                <td>
+                    <button class="btn btn-warning" th:onclick="'window.location.href = \'' + @{/student/update/{id}(id=${student.id})} + '\''">Sua</button>
+                    <button class="btn btn-danger" >Xoa</button>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"-->
+<!--        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
+<!--        crossorigin="anonymous"></script>-->
+</html>
