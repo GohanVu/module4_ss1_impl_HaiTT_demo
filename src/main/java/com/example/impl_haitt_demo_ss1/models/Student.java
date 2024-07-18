@@ -1,7 +1,17 @@
 package com.example.impl_haitt_demo_ss1.models;
 
+import javax.persistence.*;
+
+// Phan biet @Entity va @Table
+@Entity(name = "student")
+//@Table(name = "student")
 public class Student {
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id ;
+
+    @Column(name = "name")
     private String name;
     private String address;
     private Float score ;

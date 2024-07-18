@@ -4,29 +4,27 @@ import com.example.impl_haitt_demo_ss1.models.Student;
 import com.example.impl_haitt_demo_ss1.repositories.IStudentRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class StudentRepository implements IStudentRepository {
-    private static List<Student> students = new ArrayList<>();
-
-    static {
-        students.add(new Student(1L,"HaiTT1","QN",9.0f));
-        students.add(new Student(2L,"HaiTT2","QN",8.0f));
-        students.add(new Student(3L,"HaiTT3","QN",7.0f));
-        students.add(new Student(4L,"HaiTT4","QN",6.0f));
-
-    }
 
     @Override
     public List<Student> findAll() {
-        return students;
+        //CreateQuery va CreateNameQuery viet bang HQL: Hibernate query language
+        //NativeQuery: SQL
+        List<Student> students1 = BaseRepository.entityManager.createQuery("from student", Student.class).getResultList();
+        return students1;
     }
 
     @Override
     public void save(Student student) {
-        student.setId(students.get(students.size()-1).getId()+1);
-        students.add(student);
+        EntityTransaction transaction = BaseRepository.entityManager.getTransaction();
+        transaction.begin();
+        //Phan biet persist va merge
+        BaseRepository.entityManager.merge(student);
+        transaction.commit();
     }
 
     @Override
